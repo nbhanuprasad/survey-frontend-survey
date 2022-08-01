@@ -1,55 +1,39 @@
 <template>
-    <v-app>
-      <v-app-bar  >
-            <v-img
-                class="mx-2"
-                :src="logo"
-                max-height="40"
-                max-width="40"
-                contain
-            ></v-img>
-            <v-app-bar-title  >Tutorial</v-app-bar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-                <v-btn 
-                    variant="text"
-                    @click="goList"
-                    >
-                  List
-                </v-btn>
-                <v-btn 
-                    variant="text"
-                    @click="goAdd"
-                    >
-                  Add
-                </v-btn>
-            </v-toolbar-items>
-      </v-app-bar>
-      <v-main >
-        <v-container>
-          <router-view />
-        </v-container>
-      </v-main>  
-    </v-app>
+  <v-app>
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
-
 <script>
-import logo from './assets/oc-logo-white.png'
+import logo from "./assets/oc-logo-white.png";
 export default {
-  name: 'App',
-
+  name: "App",
   data: () => ({
     logo,
   }),
-  methods: {
-    goAdd() {
-      this.$router.push({ name: 'add' });
-    },
-    goList() {
-      this.$router.push({ name: 'tutorials' });
-    }
-  },
-
-}
+  methods: {},
+};
 </script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Italiana&family=Federo&family=Raleway:wght@400;500;700;800;900&display=swap");
+
+:root {
+  --black: #161515;
+  --white: #ffff;
+  --lightGreen: #32de84;
+  --blue: blue;
+  --bg-color-body: red !important;
+}
+
+body {
+  font-family: "Federo", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+</style>
 
