@@ -1,17 +1,28 @@
 <template>
   <div class="container">
+    <div class="form" v-show="showDisclaimer">{{ disclaimerMessage }}</div>
     <v-form
       class="form"
       @submit="handleSubmitSurvey"
       ref="form"
       lazy-validation
+      v-show="!showDisclaimer"
     >
       <h1 class="heading">{{ survey.title }}</h1>
       <v-text-field
         v-model="survey.email"
         label="Enter Your Email Id"
         :rules="[rules.required, rules.email]"
+        v-if="!email"
       ></v-text-field>
+      <v-text-field
+        v-model="survey.email"
+        label="Enter Your Email Id"
+        :rules="[rules.required, rules.email]"
+        v-if="email"
+        readonly
+      ></v-text-field>
+
       <v-text-field
         v-model="survey.name"
         label="Enter Your User Name"
@@ -70,7 +81,7 @@
                 question.required && ((v) => !!v || 'Rating Response Required'),
               ]"
               label="Rate Your Question"
-              max="10"
+              max="5"
               step="1"
               thumb-label="always"
               class="slider"
@@ -86,7 +97,7 @@
 <script>
 import SurveyService from "../../services/SurveyService";
 export default {
-  props: ["surveyId"],
+  props: ["surveyId", "email"],
   data() {
     return {
       survey: {
@@ -110,7 +121,10 @@ export default {
   },
   methods: {
     retreiveSurvey() {
-      SurveyDataService.getSurvey(this.surveyId)
+      if (this.email) {
+        this.survey.email = window.atob(this.email);
+      }
+      SurveyService.getSurvey(this.surveyId)
         .then((response) => {
           const apiResponse = response.data;
           this.survey.title = apiResponse.title;
@@ -121,12 +135,14 @@ export default {
           this.survey.questions = formQuestions;
         })
         .catch((e) => {
-          if (e.response.status === 400 || e.response.status === 404) {
+          if (e.response.data.message) {
+            this.showDisclaimer = true;
+            this.disclaimerMessage = e.response.data.message;
+          } else {
             this.showDisclaimer = true;
             this.disclaimerMessage =
-              "Your are not authorized to access the survey !";
+              "Invalid Survey Details / Your are not authorized to access the survey !";
           }
-          this.message = e.response.data.message;
         });
     },
     async handleSubmitSurvey(e) {
@@ -149,7 +165,7 @@ export default {
             if (response.status === 200) {
               this.showDisclaimer = true;
               this.disclaimerMessage =
-                "THANK YOU! Your response has been submitted.";
+                "THANK YOU! Your response has been recorded.";
             }
           })
           .catch((e) => {
