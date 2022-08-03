@@ -5,7 +5,13 @@ const routes = [
     path: '/survey-frontend-survey/survey/:surveyId',
     component: () => import('./views/SubmitSurvey/SubmitSurvey.vue'),
     props: true
-  }
+  },
+  {
+    name: 'submitSurveyWithEmail',
+    path: '/survey-frontend-survey/survey/:surveyId/:email',
+    component: () => import('./views/SubmitSurvey/SubmitSurvey.vue'),
+    props: true
+  },
 ];
 const router = createRouter({
   base: process.env.NODE_ENV === 'development' ? '/' : '/survey-frontend-survey/',
