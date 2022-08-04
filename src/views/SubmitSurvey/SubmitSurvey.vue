@@ -9,6 +9,7 @@
       v-show="!showDisclaimer"
     >
       <h1 class="heading">{{ survey.title }}</h1>
+      <h3 class="error__msg">{{ message }}</h3>
       <v-text-field
         v-model="survey.email"
         label="Enter Your Email Id"
@@ -109,6 +110,7 @@ export default {
       },
       showDisclaimer: false,
       disclaimerMessage: "",
+      message: "",
       rules: {
         required: (value) => !!value || `Field Required !`,
         email: (value) => {
@@ -287,5 +289,14 @@ export default {
   font-size: 25px;
   border-radius: 50%;
   margin: 0 10px;
+}
+.error__msg {
+  color: orangered;
+  text-align: center;
+  padding: 5px 0;
+  margin: 10px 0;
+  background: #fff;
+  padding: 5px 0;
+  border-radius: 10px;
 }
 </style>
